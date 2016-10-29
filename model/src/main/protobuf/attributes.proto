@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package model;
+
+message Attributes {
+  int64 hp = 1;
+  int64 tp = 2;
+  int64 str = 3;
+  int64 vit = 4;
+  int64 int = 5;
+  int64 wis = 6;
+  int64 agi = 7;
+  int64 luc = 8;
+}
