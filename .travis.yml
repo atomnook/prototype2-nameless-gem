@@ -1,5 +1,8 @@
 language: scala
 
+services:
+  - docker
+
 jdk:
   - oraclejdk8
 
@@ -7,4 +10,13 @@ scala:
   - 2.11.8
 
 script:
-  - sbt test
+  - docker pull redis:3.2.4
+  - docker run --name redis6379 -v `pwd`/conf/redis/6379:/data/conf --net host -d redis:3.2.4 redis-server /data/conf/redis.conf
+  - docker run --name redis6380 -v `pwd`/conf/redis/6380:/data/conf --net host -d redis:3.2.4 redis-server /data/conf/redis.conf
+  - docker run --name redis6381 -v `pwd`/conf/redis/6381:/data/conf --net host -d redis:3.2.4 redis-server /data/conf/redis.conf
+  - docker exec redis6379 redis-cli -p 6379 cluster addslots {0..5500}
+  - docker exec redis6380 redis-cli -p 6380 cluster addslots {5501..11000}
+  - docker exec redis6381 redis-cli -p 6381 cluster addslots {11001..16383}
+  - docker exec redis6380 redis-cli -p 6380 cluster meet 127.0.0.1 6379
+  - docker exec redis6381 redis-cli -p 6381 cluster meet 127.0.0.1 6379
+  - sbt -Dconfig.file=conf/travis.conf test
