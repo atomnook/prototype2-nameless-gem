@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package model;
+
+message SkillId {
+  string id = 1;
+}
+
+message Skill {
+  SkillId id = 1;
+  string name = 2;
+  repeated SkillId prerequisites = 3;
+}

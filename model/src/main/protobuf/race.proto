@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package model;
+
+import "attributes.proto";
+import "skill.proto";
+
+message RaceId {
+  string id = 1;
+}
+
+message Race {
+  RaceId id = 1;
+  string name = 2;
+  Attributes base_attributes = 3;
+  Attributes increasing_attributes = 4;
+  repeated SkillId skill_tree = 5;
+}
